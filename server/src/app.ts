@@ -1,7 +1,6 @@
 import express,{Express,Request,Response} from 'express';
 import colorsRouter from './routes/colors'
 const cors = require('cors')
-
 const app = express();
 app.use(express.json());
 app.use(colorsRouter)

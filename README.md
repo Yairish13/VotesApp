@@ -2,6 +2,7 @@
 
 
 <h2>Welcome to the Voting App</h2>
+<h4>Voting app built with Node.js, Express, MongoDB, Socket.io & React. </h4>
 <div>
   The Enviorment variables:
 <div>DB_NAME="colorsDB"

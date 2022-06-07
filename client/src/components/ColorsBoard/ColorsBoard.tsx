@@ -15,15 +15,12 @@ export const ColorsBoard: React.FC = () => {
     (async()=>{
       const {data}: IColor[] | any = await getColors();
       const {colors,votes} = data;
-      console.log(colors);
-      console.log(votes);
       setColors(colors)
       setMaxVotes(votes)
     })()
 
     socketController.subscribe("new-remote-operations",
     (data:any) => {
-      console.log(data)
       const {colors,votes} = data;
       setColors(colors);
       setMaxVotes(votes)
@@ -33,14 +30,6 @@ export const ColorsBoard: React.FC = () => {
       socketController.unsubscribe("new-remote-operations")
     }
   }, []);
-
-
-  // useEffect(() => {
-  //   (async () => {
-  //     // const maxVotes: number | any = await getMaxVotesColor();
-  //     // setMaxVotes(maxVotes);
-  //   })();
-  // }, []); //TODO change get from *
 
   return (
     <StyledViewColorsContainer>

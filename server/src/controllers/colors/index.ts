@@ -13,7 +13,7 @@ const getColors = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-const getMaxVotesColor = async () => {
+const getMaxVotesColor = async () : Promise<number | undefined>=> {
   try {
     const [{votes}] = await Color.find({}).sort({ votes: -1 }).limit(1);
     console.log(votes)

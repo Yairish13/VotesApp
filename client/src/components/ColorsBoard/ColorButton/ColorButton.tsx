@@ -1,7 +1,6 @@
-import React from "react";
-import {  updateColors } from "../../../api/requests";
+import React, { useState } from "react";
+import { updateColors } from "../../../api/requests";
 import { socketController } from "../../../api/SocketsController";
-import { IColor } from "../../../types";
 import Progressbar from "../Progressbar/Progressbar";
 import { StyledDivColorContainer } from "./ColorButton.styled";
 
@@ -11,22 +10,27 @@ type ColorButtonProps = {
   colorName: string;
   votes: number;
   maxVotes: number;
-  setMaxVotes: (maxVotes: number) => void;
-  setColors:(colors:IColor[])=>void
+  updateColorOffline: (id: string) => void;
 };
 const ColorButton: React.FC<ColorButtonProps> = ({
   id,
   colorCode,
   votes,
   maxVotes,
+  updateColorOffline,
 }) => {
+  const [localVotes, setLocalVotes] = useState(votes);
+  const [isOnline, setIsOnline] = useState(true);
   const onClickButton = async (): Promise<void> => {
     try {
-      const {data} = await updateColors(id);
-      const {colors,votes} = data;
-      socketController.emit("new-operations",{colors,votes})
+      const { data } = await updateColors(id);
+      setIsOnline(true)
+      const { colors, votes } = data;
+      socketController.emit("new-operations", { colors, votes });
     } catch (error) {
-      // set colors menually
+      setIsOnline(false);
+      updateColorOffline(id);
+      setLocalVotes((prevState) => prevState + 1);
       console.log(error);
     }
   };
@@ -35,14 +39,16 @@ const ColorButton: React.FC<ColorButtonProps> = ({
     <>
       {colorCode && (
         <StyledDivColorContainer color={colorCode} onClick={onClickButton}>
-          {votes && maxVotes && (
-            <Progressbar votes={votes} maxVotes={maxVotes} />
-          )}
+          {votes &&
+            maxVotes &&
+            (isOnline ? (
+              <Progressbar votes={votes} maxVotes={maxVotes} />
+            ) : (
+              <Progressbar votes={localVotes} maxVotes={maxVotes} />
+            ))}
         </StyledDivColorContainer>
       )}
     </>
   );
 };
 export default React.memo(ColorButton);
-
-

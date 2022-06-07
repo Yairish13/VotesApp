@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   StyledDivProgressbar,
   StyledDivProgressbarContainer,
@@ -24,5 +24,4 @@ const Progressbar: React.FC<ProgressbarProps> = ({ votes, maxVotes }) => {
     </>
   );
 };
-
-export default Progressbar;
+export default React.memo(Progressbar);

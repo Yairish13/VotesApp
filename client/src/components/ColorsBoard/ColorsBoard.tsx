@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { IColor } from "../../types";
 import { getColors } from "../../api/requests";
 import { StyledDivColorsContainer, StyledHeader } from "./ColorsBoard.styled";
 import ColorButton from "./ColorButton/ColorButton";
 import { socketController } from "../../api/SocketsController";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 export const ColorsBoard: React.FC = () => {
-  const [colors, setColors] = useState<IColor[]>([]);
-  const [maxVotes, setMaxVotes] = useState(0);
-  // replace to uselocalstroge
+  const [colors, setColors] = useLocalStorage<IColor[]>('colors',[]);
+  const [maxVotes, setMaxVotes] = useLocalStorage('maxVotes',0);
 
   useEffect(() => {
     (async () => {
@@ -28,11 +28,18 @@ export const ColorsBoard: React.FC = () => {
     };
   }, []);
 
+let newArr;
+const updateColorOffline = async(id:string) =>{
+  newArr = [...colors];
+  newArr.map((el)=> id === el._id ? el.votes += 1 : el)
+  setColors(newArr)
+}
+
   return (
     <>
       <StyledHeader>Favourite Colors</StyledHeader>
       <StyledDivColorsContainer>
-        {colors &&
+        {colors.length > 0 &&
           colors.map(({ _id: id, colorCode, colorName, votes }, i) => (
             <ColorButton
               key={i}
@@ -43,7 +50,7 @@ export const ColorsBoard: React.FC = () => {
                 votes,
                 colorCode,
                 maxVotes,
-                setMaxVotes,
+                updateColorOffline
               }}
             />
           ))}

@@ -13,7 +13,6 @@ function App() {
   },[])
   return (
     <>
-      <h3>Favourite Colors</h3>
       <ColorsBoard />
     </>
   );

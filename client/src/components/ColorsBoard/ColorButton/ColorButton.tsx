@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {  updateColors } from "../../../api/requests";
 import { socketController } from "../../../api/SocketsController";
 import { IColor } from "../../../types";

@@ -19,5 +19,4 @@ const colorSchema: Schema = new Schema(
   },
   { collection: process.env.COLLECTION_NAME}
 );
-console.log(process.env.COLLECTION_NAME)
 export default model<IColor>("Model", colorSchema, process.env.COLLECTION_NAME);

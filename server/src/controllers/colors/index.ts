@@ -5,21 +5,21 @@ import Color from "../../models/color";
 const getColors = async (req: Request, res: Response): Promise<void> => {
   try {
     const colors = await Color?.find({});
-    res.status(200).json(colors);
+    const votes= await getMaxVotesColor()
+        res.status(200).json({colors,votes});
   } catch (err) {
     const error = err as Error;
     res.status(500).send(error.message);
   }
 };
 
-const getMaxVotesColor = async (req: Request, res: Response): Promise<void> => {
+const getMaxVotesColor = async () => {
   try {
-    const color = await Color.find({}).sort({ votes: -1 }).limit(1);
-    res.status(200).json(color[0].votes);
+    const [{votes}] = await Color.find({}).sort({ votes: -1 }).limit(1);
+    console.log(votes)
+    return votes;
   } catch (err) {
     console.log(err);
-    const error = err as Error;
-    res.status(500).send(error.message);
   }
 };
 
@@ -53,10 +53,12 @@ const updateColor = async (req: Request, res: Response): Promise<void> => {
       { $inc: { votes: 1 } }
     );
     const allColors: IColor[] = await Color.find();
+    const votes = await getMaxVotesColor();
     res.status(200).json({
       message: "Color updated",
       color: updateColor,
       colors: allColors,
+      votes
     });
   } catch (error) {
     throw error;
@@ -79,4 +81,4 @@ const deleteColor = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
-export { getColors, addColor, updateColor, getMaxVotesColor,deleteColor };
+export { getColors, addColor, updateColor,deleteColor };

@@ -38,3 +38,17 @@ export const getColors = async (): Promise<AxiosResponse<ApiDataType>> => {
       throw new Error(err)
     }
   }
+  export const updateColorWithVotes = async (id:string,votes:number): Promise<AxiosResponse<any>> => {
+    try {
+      console.log(votes)
+      const updatedColor: AxiosResponse<ApiDataType> = await axios.put(
+        `${baseUrl}/edit-color-vote/${id}`,
+        {votes},
+      )
+      console.log(updatedColor)
+      return updatedColor
+    } catch (err:any) {
+      console.log(err)
+      throw new Error(err)
+    }
+  }

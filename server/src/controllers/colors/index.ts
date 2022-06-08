@@ -64,6 +64,31 @@ const updateColor = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const updateColorWithVotes = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const {
+      params: { id },
+      body,
+    } = req;
+    const updateColor: IColor | null = await Color.findByIdAndUpdate(
+      { _id: id },
+      { $set: { votes:body.votes } }
+    );
+    console.log(req.body)
+    console.log(updateColor);
+    const allColors: IColor[] = await Color.find();
+    const votes = await getMaxVotesColor();
+    res.status(200).json({
+      message: "Color updated",
+      color: updateColor,
+      colors: allColors,
+      votes
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 const deleteColor = async (req: Request, res: Response): Promise<void> => {
     try {
         const deletedColor: IColor | null = await Color.findByIdAndRemove(
@@ -80,4 +105,4 @@ const deleteColor = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
-export { getColors, addColor, updateColor,deleteColor };
+export { getColors, addColor, updateColor,deleteColor ,updateColorWithVotes};

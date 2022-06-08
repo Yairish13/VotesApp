@@ -17,17 +17,17 @@ export const ColorsBoard: React.FC = () => {
       setIsOnline(true);
       const { colors, votes } = data;
       console.log(colors,votes)
+      console.log(colors)
       setColors(colors);
       setMaxVotes(votes);
     });
     (async () => {
-      if (!isOnline) {
         const { data }: IColor[] | any = await getColors();
         console.log(data);
         const { colors, votes } = data;
         setColors(colors);
         setMaxVotes(votes);
-      }
+      
     })();
     return () => {
       socketController.unsubscribe("new-remote-operations");

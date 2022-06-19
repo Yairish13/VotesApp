@@ -3,7 +3,7 @@
 
 <h2>Welcome to the Voting App</h2>
 <h4>Voting app built with Node.js, Express, MongoDB, Socket.io & React. </h4>
-<div>
+<!-- <div>
   The Enviorment variables:
 <div>DB_NAME="colorsDB"
 </div>
@@ -18,4 +18,4 @@
 
 <div>
 <div>To run the server --> cd server --> npm i ---> npm start</div>
-<div>to run the client --> cd client --> npm i ---> npm start<div>
+<div>to run the client --> cd client --> npm i ---> npm start<div> -->
